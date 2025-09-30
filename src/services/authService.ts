@@ -1,16 +1,22 @@
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
+import { getApiUrl, env } from '@/config/env'
 import type { LoginCredentials, AuthResponse, User } from '@/types'
 
-const API_BASE_URL = 'http://localhost:5000/api'
-
 class AuthService {
-  private tokenKey = 'authToken'
-  private userKey = 'currentUser'
+  private readonly apiBaseUrl: string
+  private readonly tokenKey: string
+  private readonly userKey: string
+
+  constructor() {
+    this.apiBaseUrl = getApiUrl()
+    this.tokenKey = env.JWT_STORAGE_KEY
+    this.userKey = env.USER_STORAGE_KEY
+  }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials)
+      const response = await axios.post(`${this.apiBaseUrl}/auth/login`, credentials)
       const authData: AuthResponse = response.data
 
       this.setToken(authData.token)

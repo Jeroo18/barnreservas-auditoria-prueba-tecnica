@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getApiUrl } from '@/config/env'
 import { authService } from './authService'
 import type {
   Reservation,
@@ -8,9 +9,12 @@ import type {
   PaginatedResponse
 } from '@/types'
 
-const API_BASE_URL = 'http://localhost:5000/api'
-
 class ReservationService {
+  private readonly apiBaseUrl: string
+
+  constructor() {
+    this.apiBaseUrl = getApiUrl()
+  }
   async getAllReservations(page = 1, pageSize = 10, search = ''): Promise<PaginatedResponse<Reservation>> {
     try {
       const params = new URLSearchParams({
@@ -19,8 +23,9 @@ class ReservationService {
         ...(search && { search })
       })
 
-      const response = await axios.get(`${API_BASE_URL}/reservations?${params}`)
-      return response.data
+      const response = await axios.get(`${this.apiBaseUrl}/reservations?${params}`)
+      // Check if the response is wrapped in a data property like other endpoints
+      return response.data.data || response.data
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Failed to fetch reservations')
     }
@@ -28,7 +33,7 @@ class ReservationService {
 
   async getReservationById(id: number): Promise<Reservation> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/reservations/${id}`)
+      const response = await axios.get(`${this.apiBaseUrl}/reservations/${id}`)
       return response.data.data
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Failed to fetch reservation')
@@ -38,7 +43,7 @@ class ReservationService {
   async createReservation(reservation: CreateReservationRequest): Promise<Reservation> {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/reservations`,
+        `${this.apiBaseUrl}/reservations`,
         reservation,
         { headers: authService.getAuthHeader() }
       )
@@ -51,7 +56,7 @@ class ReservationService {
   async updateReservation(id: number, reservation: UpdateReservationRequest): Promise<Reservation> {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/reservations/${id}`,
+        `${this.apiBaseUrl}/reservations/${id}`,
         reservation,
         { headers: authService.getAuthHeader() }
       )
@@ -64,7 +69,7 @@ class ReservationService {
   async deleteReservation(id: number): Promise<void> {
     try {
       await axios.delete(
-        `${API_BASE_URL}/reservations/${id}`,
+        `${this.apiBaseUrl}/reservations/${id}`,
         { headers: authService.getAuthHeader() }
       )
     } catch (error: any) {
@@ -74,7 +79,7 @@ class ReservationService {
 
   async getReservationsByDate(date: string): Promise<Reservation[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/reservations/by-date/${date}`)
+      const response = await axios.get(`${this.apiBaseUrl}/reservations/by-date/${date}`)
       return response.data.data
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Failed to fetch reservations by date')
@@ -83,7 +88,7 @@ class ReservationService {
 
   async getUpcomingReservations(): Promise<Reservation[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/reservations/upcoming`)
+      const response = await axios.get(`${this.apiBaseUrl}/reservations/upcoming`)
       return response.data.data
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Failed to fetch upcoming reservations')

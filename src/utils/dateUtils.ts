@@ -13,7 +13,7 @@ export const formatDateTime = (date: string | Date, time?: string): string => {
 
   if (time) {
     const [hours, minutes] = time.split(':')
-    dateObj.setHours(parseInt(hours), parseInt(minutes))
+    dateObj.setHours(parseInt(hours || '0'), parseInt(minutes || '0'))
   }
 
   return dateObj.toLocaleString('en-US', {
@@ -27,8 +27,8 @@ export const formatDateTime = (date: string | Date, time?: string): string => {
 
 export const formatTime = (time: string): string => {
   const [hours, minutes] = time.split(':')
-  const hour = parseInt(hours)
-  const minute = parseInt(minutes)
+  const hour = parseInt(hours || '0')
+  const minute = parseInt(minutes || '0')
 
   const date = new Date()
   date.setHours(hour, minute)
@@ -67,7 +67,7 @@ export const getDateDifferenceInDays = (date1: string | Date, date2: string | Da
 
 export const getMinimumDate = (): string => {
   const today = new Date()
-  return today.toISOString().split('T')[0]
+  return today.toISOString().split('T')[0] || ''
 }
 
 export const addDays = (date: string | Date, days: number): Date => {

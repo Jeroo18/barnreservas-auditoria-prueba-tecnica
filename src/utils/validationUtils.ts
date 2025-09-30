@@ -33,7 +33,10 @@ export const validateTime = (time: string): boolean => {
 }
 
 export const validateGuestCount = (count: number): boolean => {
-  return count > 0 && count <= 20
+  // Import here to avoid circular dependency issues
+  const maxGuests = import.meta.env.VITE_MAX_GUESTS_PER_RESERVATION ?
+    parseInt(import.meta.env.VITE_MAX_GUESTS_PER_RESERVATION) : 20
+  return count > 0 && count <= maxGuests
 }
 
 export const getEmailError = (email: string): string => {
@@ -67,7 +70,10 @@ export const getTimeError = (time: string): string => {
 }
 
 export const getGuestCountError = (count: number): string => {
+  const maxGuests = import.meta.env.VITE_MAX_GUESTS_PER_RESERVATION ?
+    parseInt(import.meta.env.VITE_MAX_GUESTS_PER_RESERVATION) : 20
+
   if (!count || count <= 0) return 'Number of guests is required'
-  if (!validateGuestCount(count)) return 'Number of guests must be between 1 and 20'
+  if (!validateGuestCount(count)) return `Number of guests must be between 1 and ${maxGuests}`
   return ''
 }

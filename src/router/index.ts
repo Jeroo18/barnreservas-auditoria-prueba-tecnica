@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { appConfig } from '@/config/env'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -10,7 +11,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: {
-        title: 'Inicio - Reservations Happiness'
+        title: `Inicio - ${appConfig.title}`
       }
     },
     {
@@ -18,7 +19,7 @@ const router = createRouter({
       name: 'login',
       component: () => import('../views/LoginView.vue'),
       meta: {
-        title: 'Iniciar Sesión - Reservations Happiness',
+        title: `Iniciar Sesión - ${appConfig.title}`,
         requiresGuest: true
       }
     },
@@ -27,7 +28,7 @@ const router = createRouter({
       name: 'reservations',
       component: () => import('../views/ReservationsView.vue'),
       meta: {
-        title: 'Reservas - Reservations Happiness'
+        title: `Reservas - ${appConfig.title}`
       }
     },
     {
@@ -35,7 +36,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue'),
       meta: {
-        title: 'Acerca de - Reservations Happiness'
+        title: `Acerca de - ${appConfig.title}`
       }
     },
     {
@@ -43,7 +44,7 @@ const router = createRouter({
       name: 'not-found',
       component: () => import('../views/NotFoundView.vue'),
       meta: {
-        title: 'Página No Encontrada - Reservations Happiness'
+        title: `Página No Encontrada - ${appConfig.title}`
       }
     }
   ],

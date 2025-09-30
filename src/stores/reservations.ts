@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { env } from '@/config/env'
 import { reservationService } from '@/services/reservationService'
 import type {
   Reservation,
   CreateReservationRequest,
   UpdateReservationRequest,
   PaginatedResponse,
-  ReservationStatus
+  ReservationStatus,
 } from '@/types'
 
 export const useReservationsStore = defineStore('reservations', () => {
@@ -17,8 +18,8 @@ export const useReservationsStore = defineStore('reservations', () => {
   const pagination = ref({
     total: 0,
     page: 1,
-    pageSize: 10,
-    totalPages: 0
+    pageSize: env.ITEMS_PER_PAGE,
+    totalPages: 0,
   })
 
   const searchQuery = ref('')
@@ -29,33 +30,39 @@ export const useReservationsStore = defineStore('reservations', () => {
 
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()
-      filtered = filtered.filter(reservation =>
-        reservation.customerName.toLowerCase().includes(query) ||
-        reservation.customerEmail.toLowerCase().includes(query) ||
-        reservation.customerPhone.includes(query)
+      filtered = filtered.filter(
+        (reservation) =>
+          reservation.customerName.toLowerCase().includes(query) ||
+          reservation.customerEmail.toLowerCase().includes(query) ||
+          reservation.customerPhone.includes(query),
       )
     }
 
     if (statusFilter.value) {
-      filtered = filtered.filter(reservation => reservation.status === statusFilter.value)
+      filtered = filtered.filter((reservation) => reservation.status === statusFilter.value)
     }
 
     return filtered
   })
 
-  const fetchReservations = async (page = 1, pageSize = 10, search = '') => {
+  const fetchReservations = async (page = 1, pageSize = env.ITEMS_PER_PAGE, search = '') => {
     try {
       isLoading.value = true
       error.value = null
 
-      const response: PaginatedResponse<Reservation> = await reservationService.getAllReservations(page, pageSize, search)
+      const response: PaginatedResponse<Reservation> = await reservationService.getAllReservations(
+        page,
+        pageSize,
+        search,
+      )
 
       reservations.value = response.data
+      console.log(response.data)
       pagination.value = {
         total: response.total,
         page: response.page,
         pageSize: response.pageSize,
-        totalPages: response.totalPages
+        totalPages: response.totalPages,
       }
     } catch (err: any) {
       error.value = err.message
@@ -87,10 +94,17 @@ export const useReservationsStore = defineStore('reservations', () => {
       error.value = null
 
       const newReservation = await reservationService.createReservation(reservation)
+
+      // Ensure reservations list is initialized before unshifting
+      if (!reservations.value) {
+        reservations.value = []
+      }
+
       reservations.value.unshift(newReservation)
+
       return newReservation
     } catch (err: any) {
-      error.value = err.message
+      error.value = err?.message ?? 'Error creating reservation'
       throw err
     } finally {
       isLoading.value = false
@@ -104,7 +118,7 @@ export const useReservationsStore = defineStore('reservations', () => {
 
       const updatedReservation = await reservationService.updateReservation(id, reservation)
 
-      const index = reservations.value.findIndex(r => r.id === id)
+      const index = reservations.value.findIndex((r) => r.id === id)
       if (index !== -1) {
         reservations.value[index] = updatedReservation
       }
@@ -129,7 +143,7 @@ export const useReservationsStore = defineStore('reservations', () => {
 
       await reservationService.deleteReservation(id)
 
-      reservations.value = reservations.value.filter(r => r.id !== id)
+      reservations.value = reservations.value.filter((r) => r.id !== id)
 
       if (currentReservation.value?.id === id) {
         currentReservation.value = null
@@ -175,6 +189,6 @@ export const useReservationsStore = defineStore('reservations', () => {
     setSearchQuery,
     setStatusFilter,
     clearError,
-    clearCurrentReservation
+    clearCurrentReservation,
   }
 })

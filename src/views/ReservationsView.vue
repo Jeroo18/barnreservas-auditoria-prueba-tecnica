@@ -9,11 +9,12 @@
         <p class="text-muted mb-0">Gestiona todas las reservas del restaurante</p>
       </div>
 
-      <button
+      <!--button
         v-if="authStore.isAuthenticated"
         class="btn btn-primary btn-lg"
         @click="openCreateModal"
-      >
+      -->
+      <button class="btn btn-primary btn-lg" @click="openCreateModal">
         <i class="bi bi-plus-circle me-2"></i>
         Nueva Reserva
       </button>
@@ -31,7 +32,7 @@
             class="form-control"
             placeholder="Buscar por nombre, email o teléfono del cliente..."
             @input="handleSearch"
-          >
+          />
           <button
             v-if="searchQuery"
             class="btn btn-outline-secondary"
@@ -44,11 +45,7 @@
       </div>
 
       <div class="col-md-3">
-        <select
-          v-model="statusFilter"
-          class="form-select"
-          @change="handleStatusFilter"
-        >
+        <select v-model="statusFilter" class="form-select" @change="handleStatusFilter">
           <option value="">Todos los Estados</option>
           <option value="PENDING">Pendiente</option>
           <option value="CONFIRMED">Confirmada</option>
@@ -63,14 +60,21 @@
           @click="refreshReservations"
           :disabled="reservationsStore.isLoading"
         >
-          <span v-if="reservationsStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
+          <span
+            v-if="reservationsStore.isLoading"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
           <i v-else class="bi bi-arrow-clockwise me-2"></i>
           Actualizar
         </button>
       </div>
     </div>
 
-    <div v-if="reservationsStore.error" class="alert alert-danger d-flex align-items-center" role="alert">
+    <div
+      v-if="reservationsStore.error"
+      class="alert alert-danger d-flex align-items-center"
+      role="alert"
+    >
       <i class="bi bi-exclamation-triangle-fill me-2"></i>
       {{ reservationsStore.error }}
       <button
@@ -93,7 +97,11 @@
           <i class="bi bi-calendar-x text-muted display-1"></i>
           <h5 class="mt-3 text-muted">No se encontraron reservas</h5>
           <p class="text-muted">
-            {{ searchQuery || statusFilter ? 'Intenta ajustar tus filtros de búsqueda' : 'Crea tu primera reserva para comenzar' }}
+            {{
+              searchQuery || statusFilter
+                ? 'Intenta ajustar tus filtros de búsqueda'
+                : 'Crea tu primera reserva para comenzar'
+            }}
           </p>
         </div>
 
@@ -204,21 +212,26 @@
           v-for="page in visiblePages"
           :key="page"
           class="page-item"
-          :class="{ active: page === reservationsStore.pagination.page }"
+          :class="{ active: page === reservationsStore.pagination.page, disabled: page === '...' }"
         >
-          <button class="page-link" @click="goToPage(page)">
+          <span v-if="page === '...'" class="page-link">...</span>
+          <button v-else class="page-link" @click="goToPage(page as number)">
             {{ page }}
           </button>
         </li>
 
         <li
           class="page-item"
-          :class="{ disabled: reservationsStore.pagination.page === reservationsStore.pagination.totalPages }"
+          :class="{
+            disabled: reservationsStore.pagination.page === reservationsStore.pagination.totalPages,
+          }"
         >
           <button
             class="page-link"
             @click="goToPage(reservationsStore.pagination.page + 1)"
-            :disabled="reservationsStore.pagination.page === reservationsStore.pagination.totalPages"
+            :disabled="
+              reservationsStore.pagination.page === reservationsStore.pagination.totalPages
+            "
           >
             <i class="bi bi-chevron-right"></i>
           </button>
@@ -227,15 +240,9 @@
     </nav>
 
     <!-- Modals -->
-    <ReservationModal
-      ref="reservationModal"
-      @reservation-saved="handleReservationSaved"
-    />
+    <ReservationModal ref="reservationModal" @reservation-saved="handleReservationSaved" />
 
-    <DeleteConfirmationModal
-      ref="deleteModal"
-      @confirmed="handleDelete"
-    />
+    <DeleteConfirmationModal ref="deleteModal" @confirmed="handleDelete" />
   </div>
 </template>
 
@@ -258,19 +265,20 @@ const statusFilter = ref<ReservationStatus | ''>('')
 const selectedReservation = ref<Reservation | null>(null)
 
 const filteredReservations = computed(() => {
-  let filtered = reservationsStore.reservations
+  let filtered = reservationsStore.reservations ?? []
 
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(reservation =>
-      reservation.customerName.toLowerCase().includes(query) ||
-      reservation.customerEmail.toLowerCase().includes(query) ||
-      reservation.customerPhone.includes(query)
+    filtered = filtered.filter(
+      (reservation) =>
+        reservation.customerName.toLowerCase().includes(query) ||
+        reservation.customerEmail.toLowerCase().includes(query) ||
+        reservation.customerPhone.includes(query),
     )
   }
 
   if (statusFilter.value) {
-    filtered = filtered.filter(reservation => reservation.status === statusFilter.value)
+    filtered = filtered.filter((reservation) => reservation.status === statusFilter.value)
   }
 
   return filtered
@@ -308,7 +316,7 @@ const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -378,7 +386,7 @@ const confirmDelete = (reservation: Reservation) => {
   deleteModal.value?.show(
     'Delete Reservation',
     `Are you sure you want to delete the reservation for ${reservation.customerName}?`,
-    'This action cannot be undone.'
+    'This action cannot be undone.',
   )
 }
 

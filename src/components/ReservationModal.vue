@@ -148,7 +148,7 @@
                   required
                 >
                   <option value="">Selecciona el número de huéspedes</option>
-                  <option v-for="n in 20" :key="n" :value="n">{{ n }} {{ n === 1 ? 'Huésped' : 'Huéspedes' }}</option>
+                  <option v-for="n in env.MAX_GUESTS_PER_RESERVATION" :key="n" :value="n">{{ n }} {{ n === 1 ? 'Huésped' : 'Huéspedes' }}</option>
                 </select>
                 <div v-if="errors.numberOfGuests" class="invalid-feedback">
                   {{ errors.numberOfGuests }}
@@ -222,8 +222,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
+import { env } from '@/config/env'
 import { useReservationsStore } from '@/stores/reservations'
-import type { Reservation, CreateReservationRequest, UpdateReservationRequest, ReservationStatus } from '@/types'
+import { ReservationStatus } from '@/types'
+import type { Reservation, CreateReservationRequest, UpdateReservationRequest } from '@/types'
 
 const emit = defineEmits<{
   reservationSaved: []
@@ -246,7 +248,7 @@ const form = ref({
   reservationDate: '',
   reservationTime: '',
   numberOfGuests: 0,
-  status: 'PENDING' as ReservationStatus,
+  status: ReservationStatus.PENDING,
   notes: ''
 })
 
@@ -322,8 +324,8 @@ const validateForm = () => {
 
   if (!form.value.numberOfGuests || form.value.numberOfGuests < 1) {
     errors.value.numberOfGuests = 'Number of guests is required'
-  } else if (form.value.numberOfGuests > 20) {
-    errors.value.numberOfGuests = 'Maximum 20 guests allowed'
+  } else if (form.value.numberOfGuests > env.MAX_GUESTS_PER_RESERVATION) {
+    errors.value.numberOfGuests = `Máximo ${env.MAX_GUESTS_PER_RESERVATION} huéspedes permitidos`
   }
 
   return !Object.values(errors.value).some(error => error)
@@ -337,7 +339,7 @@ const resetForm = () => {
     reservationDate: '',
     reservationTime: '',
     numberOfGuests: 0,
-    status: 'PENDING',
+    status: ReservationStatus.PENDING,
     notes: ''
   }
 
