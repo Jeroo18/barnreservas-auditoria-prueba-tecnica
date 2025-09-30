@@ -1,0 +1,139 @@
+@import './base.css';
+
+/* Global overrides for our restaurant reservation app */
+#app {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a6fd8;
+}
+
+/* Global utility classes */
+.text-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-custom {
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #667eea, #764ba2) border-box;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced focus styles for accessibility */
+.form-control:focus,
+.form-select:focus,
+.btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  border-color: #667eea;
+}
+
+/* Loading spinner override */
+.spinner-border-primary {
+  color: #667eea;
+}
+
+/* Custom table enhancements */
+.table-hover tbody tr:hover {
+  background-color: rgba(102, 126, 234, 0.05);
+  transform: scale(1.005);
+  transition: all 0.2s ease;
+}
+
+/* Enhanced card styling */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile-first responsive typography */
+@media (max-width: 576px) {
+  .display-1 {
+    font-size: 2.5rem !important;
+  }
+
+  .display-4 {
+    font-size: 1.8rem !important;
+  }
+
+  .lead {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .navbar,
+  .modal,
+  .btn {
+    display: none !important;
+  }
+
+  .container-fluid {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
