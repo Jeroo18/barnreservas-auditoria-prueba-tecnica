@@ -73,3 +73,6 @@ pids
 # Temporary folders
 tmp/
 temp/
+
+# IDE and tool specific folders
+.claude/

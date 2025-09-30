@@ -219,10 +219,8 @@ npm run preview
 
 Este proyecto fue desarrollado como parte de una prueba técnica para Banreservas.
 
-### **Generado con**
-🤖 [Claude Code](https://claude.ai/code)
-
-**Co-Authored-By:** Claude <noreply@anthropic.com>
+### **Desarrollado por**
+Equipo de desarrollo de Banreservas
 
 ---
 
