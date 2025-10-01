@@ -16,6 +16,9 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
+      console.log('Login request payload:', credentials)
+      console.log('API URL:', `${this.apiBaseUrl}/Account/authenticate`)
+
       const response = await axios.post(`${this.apiBaseUrl}/Account/authenticate`, credentials)
       const authData: AuthResponse = response.data
 
@@ -24,12 +27,24 @@ class AuthService {
 
       return authData
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Login failed')
+      console.error('Login error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        config: error.config
+      })
+
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.title ||
+                          error.response?.data ||
+                          `Login failed (${error.response?.status})`
+
+      throw new Error(errorMessage)
     }
   }
 
   async loginWithParams(username: string, password: string): Promise<AuthResponse> {
-    return this.login({ username, password })
+    return this.login({ Username: username, Password: password })
   }
 
   logout(): void {

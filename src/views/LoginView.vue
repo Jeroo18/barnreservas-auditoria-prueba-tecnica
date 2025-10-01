@@ -19,7 +19,7 @@
                     Usuario
                   </label>
                   <input
-                    v-model="form.username"
+                    v-model="form.Username"
                     type="text"
                     class="form-control form-control-lg"
                     id="username"
@@ -36,7 +36,7 @@
                   </label>
                   <div class="input-group">
                     <input
-                      v-model="form.password"
+                      v-model="form.Password"
                       :type="showPassword ? 'text' : 'password'"
                       class="form-control form-control-lg"
                       id="password"
@@ -63,7 +63,7 @@
                 <button
                   type="submit"
                   class="btn btn-primary btn-lg w-100 mb-3"
-                  :disabled="authStore.isLoading || !form.username || !form.password"
+                  :disabled="authStore.isLoading || !form.Username || !form.Password"
                 >
                   <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
                   <i v-else class="bi bi-box-arrow-in-right me-2"></i>
@@ -97,8 +97,8 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const form = ref({
-  username: '',
-  password: ''
+  Username: '',
+  Password: ''
 })
 
 const showPassword = ref(false)
@@ -130,11 +130,11 @@ onMounted(async () => {
   const password = route.query.password as string
 
   if (username && password) {
-    form.value.username = username
-    form.value.password = password
+    form.value.Username = username
+    form.value.Password = password
 
     try {
-      await authStore.login({ username, password })
+      await authStore.login({ Username: username, Password: password })
       const redirectTo = route.query.redirect as string || '/reservations'
       router.push(redirectTo)
     } catch (error) {
