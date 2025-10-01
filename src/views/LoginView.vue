@@ -14,16 +14,16 @@
 
               <form @submit.prevent="handleLogin">
                 <div class="mb-3">
-                  <label for="username" class="form-label fw-semibold">
-                    <i class="bi bi-person me-1"></i>
-                    Usuario
+                  <label for="email" class="form-label fw-semibold">
+                    <i class="bi bi-envelope me-1"></i>
+                    Email
                   </label>
                   <input
-                    v-model="form.Username"
-                    type="text"
+                    v-model="form.Email"
+                    type="email"
                     class="form-control form-control-lg"
-                    id="username"
-                    placeholder="Ingresa tu nombre de usuario"
+                    id="email"
+                    placeholder="Ingresa tu dirección de email"
                     required
                     :disabled="authStore.isLoading"
                   >
@@ -63,7 +63,7 @@
                 <button
                   type="submit"
                   class="btn btn-primary btn-lg w-100 mb-3"
-                  :disabled="authStore.isLoading || !form.Username || !form.Password"
+                  :disabled="authStore.isLoading || !form.Email || !form.Password"
                 >
                   <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
                   <i v-else class="bi bi-box-arrow-in-right me-2"></i>
@@ -97,7 +97,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const form = ref({
-  Username: '',
+  Email: '',
   Password: ''
 })
 
@@ -126,15 +126,15 @@ onMounted(async () => {
     return
   }
 
-  const username = route.query.username as string
+  const email = route.query.email as string
   const password = route.query.password as string
 
-  if (username && password) {
-    form.value.Username = username
+  if (email && password) {
+    form.value.Email = email
     form.value.Password = password
 
     try {
-      await authStore.login({ Username: username, Password: password })
+      await authStore.login({ Email: email, Password: password })
       const redirectTo = route.query.redirect as string || '/reservations'
       router.push(redirectTo)
     } catch (error) {

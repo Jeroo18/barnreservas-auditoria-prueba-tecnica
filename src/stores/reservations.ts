@@ -50,6 +50,8 @@ export const useReservationsStore = defineStore('reservations', () => {
       isLoading.value = true
       error.value = null
 
+      console.log(`Fetching reservations: page=${page}, pageSize=${pageSize}, search="${search}"`)
+
       const response: PaginatedResponse<Reservation> = await reservationService.getAllReservations(
         page,
         pageSize,
@@ -57,7 +59,7 @@ export const useReservationsStore = defineStore('reservations', () => {
       )
 
       reservations.value = response.data
-      console.log(response.data)
+      console.log('Reservations fetched successfully:', response.data)
       pagination.value = {
         total: response.total,
         page: response.page,
@@ -65,10 +67,19 @@ export const useReservationsStore = defineStore('reservations', () => {
         totalPages: response.totalPages,
       }
     } catch (err: any) {
+      console.error('Error in fetchReservations:', err)
       error.value = err.message
       throw err
     } finally {
       isLoading.value = false
+    }
+  }
+
+  const testApiEndpoints = async () => {
+    try {
+      await reservationService.testApiEndpoints()
+    } catch (err: any) {
+      console.error('API endpoint testing failed:', err)
     }
   }
 
@@ -186,6 +197,7 @@ export const useReservationsStore = defineStore('reservations', () => {
     createReservation,
     updateReservation,
     deleteReservation,
+    testApiEndpoints,
     setSearchQuery,
     setStatusFilter,
     clearError,

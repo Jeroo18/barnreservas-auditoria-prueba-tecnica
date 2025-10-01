@@ -46,10 +46,10 @@
       <div class="col-md-3">
         <select v-model="statusFilter" class="form-select" @change="handleStatusFilter">
           <option value="">Todos los Estados</option>
-          <option value="PENDING">Pendiente</option>
-          <option value="CONFIRMED">Confirmada</option>
-          <option value="CANCELLED">Cancelada</option>
-          <option value="COMPLETED">Completada</option>
+          <option value="Pending">Pendiente</option>
+          <option value="Confirmed">Confirmada</option>
+          <option value="Cancelled">Cancelada</option>
+          <option value="Completed">Completada</option>
         </select>
       </div>
 
@@ -322,13 +322,13 @@ const formatDate = (date: string) => {
 const getStatusBadgeClass = (status: ReservationStatus) => {
   const baseClass = 'badge '
   switch (status) {
-    case 'PENDING':
+    case 'Pending':
       return baseClass + 'bg-warning text-dark'
-    case 'CONFIRMED':
+    case 'Confirmed':
       return baseClass + 'bg-success'
-    case 'CANCELLED':
+    case 'Cancelled':
       return baseClass + 'bg-danger'
-    case 'COMPLETED':
+    case 'Completed':
       return baseClass + 'bg-secondary'
     default:
       return baseClass + 'bg-secondary'
@@ -337,13 +337,13 @@ const getStatusBadgeClass = (status: ReservationStatus) => {
 
 const getStatusIcon = (status: ReservationStatus) => {
   switch (status) {
-    case 'PENDING':
+    case 'Pending':
       return 'bi bi-clock'
-    case 'CONFIRMED':
+    case 'Confirmed':
       return 'bi bi-check-circle'
-    case 'CANCELLED':
+    case 'Cancelled':
       return 'bi bi-x-circle'
-    case 'COMPLETED':
+    case 'Completed':
       return 'bi bi-check-circle-fill'
     default:
       return 'bi bi-question-circle'

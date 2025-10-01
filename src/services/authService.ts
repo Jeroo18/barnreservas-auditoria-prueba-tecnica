@@ -3,44 +3,46 @@ import { jwtDecode } from 'jwt-decode'
 import { getApiUrl, env } from '@/config/env'
 import type { LoginCredentials, AuthResponse, User } from '@/types'
 
-// Add request interceptor for debugging
-axios.interceptors.request.use(
-  (config) => {
-    console.log('Axios Request:', {
-      url: config.url,
-      method: config.method,
-      data: config.data,
-      headers: config.headers
-    })
-    return config
-  },
-  (error) => {
-    console.error('Request interceptor error:', error)
-    return Promise.reject(error)
-  }
-)
+// Add request interceptor for debugging (only in non-test environment)
+if (typeof import.meta === 'undefined' || !import.meta.env?.VITEST) {
+  axios.interceptors.request.use(
+    (config) => {
+      console.log('Axios Request:', {
+        url: config.url,
+        method: config.method,
+        data: config.data,
+        headers: config.headers
+      })
+      return config
+    },
+    (error) => {
+      console.error('Request interceptor error:', error)
+      return Promise.reject(error)
+    }
+  )
 
-// Add response interceptor for debugging
-axios.interceptors.response.use(
-  (response) => {
-    console.log('Axios Response:', {
-      status: response.status,
-      statusText: response.statusText,
-      data: response.data,
-      headers: response.headers
-    })
-    return response
-  },
-  (error) => {
-    console.error('Response interceptor error:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    })
-    return Promise.reject(error)
-  }
-)
+  // Add response interceptor for debugging
+  axios.interceptors.response.use(
+    (response) => {
+      console.log('Axios Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: response.data,
+        headers: response.headers
+      })
+      return response
+    },
+    (error) => {
+      console.error('Response interceptor error:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers
+      })
+      return Promise.reject(error)
+    }
+  )
+}
 
 class AuthService {
   private readonly apiBaseUrl: string
@@ -155,8 +157,8 @@ class AuthService {
     }
   }
 
-  async loginWithParams(username: string, password: string): Promise<AuthResponse> {
-    return this.login({ Username: username, Password: password })
+  async loginWithParams(email: string, password: string): Promise<AuthResponse> {
+    return this.login({ Email: email, Password: password })
   }
 
   logout(): void {

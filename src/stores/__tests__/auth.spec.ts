@@ -86,7 +86,7 @@ describe('Auth Store', () => {
       vi.mocked(authService).login.mockResolvedValue(mockResponse)
 
       const authStore = useAuthStore()
-      const credentials = { Username: 'testuser', Password: 'password' }
+      const credentials = { Email: 'test@example.com', Password: 'password' }
 
       const result = await authStore.login(credentials)
 
@@ -102,7 +102,7 @@ describe('Auth Store', () => {
       vi.mocked(authService).login.mockRejectedValue(new Error(errorMessage))
 
       const authStore = useAuthStore()
-      const credentials = { Username: 'testuser', Password: 'wrong' }
+      const credentials = { Email: 'test@example.com', Password: 'wrong' }
 
       await expect(authStore.login(credentials)).rejects.toThrow(errorMessage)
 
@@ -119,7 +119,7 @@ describe('Auth Store', () => {
       vi.mocked(authService).login.mockReturnValue(loginPromise)
 
       const authStore = useAuthStore()
-      const credentials = { Username: 'testuser', Password: 'password' }
+      const credentials = { Email: 'test@example.com', Password: 'password' }
 
       const loginCall = authStore.login(credentials)
 

@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface LoginCredentials {
-  Username: string
+  Email: string
   Password: string
 }
 
@@ -17,6 +17,22 @@ export interface AuthResponse {
   Token: string
 }
 
+// API Response format (PascalCase)
+export interface ReservationApiResponse {
+  Id: number
+  CustomerName: string
+  CustomerEmail: string
+  CustomerPhone: string
+  ReservationDate: string
+  ReservationTime: string
+  NumberOfGuests: number
+  Status: string
+  SpecialRequests?: string
+  CreatedBy?: string | null
+  CreatedDate: string
+}
+
+// Frontend format (camelCase)
 export interface Reservation {
   id: number
   customerName: string
@@ -28,7 +44,7 @@ export interface Reservation {
   status: ReservationStatus
   notes?: string
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
 }
 
 export interface CreateReservationRequest {
@@ -46,10 +62,10 @@ export interface UpdateReservationRequest extends CreateReservationRequest {
 }
 
 export enum ReservationStatus {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  CANCELLED = 'CANCELLED',
-  COMPLETED = 'COMPLETED'
+  PENDING = 'Pending',
+  CONFIRMED = 'Confirmed',
+  CANCELLED = 'Cancelled',
+  COMPLETED = 'Completed'
 }
 
 export interface ApiResponse<T> {
