@@ -8,7 +8,14 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
+  // Core authentication state
   const isAuthenticated = computed(() => !!user.value && authService.isAuthenticated())
+
+  // CRUD permissions for reservations
+  const canCreateReservations = computed(() => isAuthenticated.value)
+  const canEditReservations = computed(() => isAuthenticated.value)
+  const canDeleteReservations = computed(() => isAuthenticated.value)
+  const canViewReservations = computed(() => true) // Anyone can view
 
   const login = async (credentials: LoginCredentials) => {
     try {
@@ -25,10 +32,6 @@ export const useAuthStore = defineStore('auth', () => {
     } finally {
       isLoading.value = false
     }
-  }
-
-  const loginWithParams = async (username: string, password: string) => {
-    return login({ username, password })
   }
 
   const logout = () => {
@@ -53,8 +56,11 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading,
     error,
     isAuthenticated,
+    canCreateReservations,
+    canEditReservations,
+    canDeleteReservations,
+    canViewReservations,
     login,
-    loginWithParams,
     logout,
     initializeAuth,
     clearError

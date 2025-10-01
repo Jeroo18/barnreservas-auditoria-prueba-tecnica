@@ -215,21 +215,90 @@ npm run preview
 
 ---
 
-## 🤝 Contribución
+## 🧪 Pruebas Unitarias
 
-Este proyecto fue desarrollado como parte de una prueba técnica para Banreservas.
+El proyecto incluye un conjunto completo de pruebas unitarias que cubren:
 
-### **Desarrollado por**
-Equipo de desarrollo de Banreservas
+### **Servicios**
+- `authService.spec.ts` - Pruebas de autenticación y JWT
+- `reservationService.spec.ts` - Pruebas de operaciones CRUD
+
+### **Stores**
+- `auth.spec.ts` - Pruebas de estado de autenticación
+- Validación de permisos CRUD
+
+### **Utilidades**
+- `validationUtils.spec.ts` - Pruebas de validación de formularios
+- `dateUtils.spec.ts` - Pruebas de manipulación de fechas
+
+### **Componentes**
+- `ReservationModal.spec.ts` - Pruebas de componente modal
+
+### **Ejecutar Pruebas**
+```bash
+# Ejecutar todas las pruebas
+npm run test:unit
+
+# Ejecutar pruebas en modo watch
+npm run test:unit -- --watch
+
+# Generar reporte de cobertura
+npm run test:unit -- --coverage
+```
+
+---
+
+## 🏗️ API Configuration
+
+El proyecto está configurado para trabajar con un backend .NET que debe ejecutarse en:
+
+- **HTTPS**: `https://localhost:7001/api`
+- **HTTP**: `http://localhost:5001/api`
+
+### **Variables de Entorno**
+Crear archivo `.env` basado en `.env.example`:
+
+```bash
+VITE_API_BASE_URL=https://localhost:7001/api
+VITE_API_BASE_URL_HTTP=http://localhost:5001/api
+VITE_APP_TITLE=Reservations Happiness
+VITE_MAX_GUESTS_PER_RESERVATION=20
+```
+
+---
+
+## 🔧 Configuración de Autenticación
+
+### **Permisos CRUD**
+- **Ver Reservas**: Acceso público
+- **Crear Reservas**: Requiere autenticación
+- **Editar Reservas**: Requiere autenticación
+- **Eliminar Reservas**: Requiere autenticación
+
+### **Token JWT**
+- Validación automática de expiración
+- Renovación transparente de sesión
+- Logout automático en caso de token inválido
+
+---
+
+## 👨‍💻 Autor
+
+**MSc. Salvador Cuevas**
+*Banreservas - Auditoría*
+
+Sistema desarrollado como prueba técnica para el Banco de Reservas de la República Dominicana, demostrando competencias en desarrollo frontend moderno con Vue 3, TypeScript y arquitectura de componentes escalable.
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto es parte de una evaluación técnica y está destinado únicamente para fines educativos y de demostración.
+Este proyecto fue desarrollado como parte de una evaluación técnica para Banreservas y está destinado únicamente para fines educativos y de demostración.
 
 ---
 
 ## 📞 Soporte
 
-Para preguntas o issues relacionados con este proyecto, por favor contacta al equipo de desarrollo.
+Para consultas técnicas relacionadas con este proyecto, contactar a:
+- **MSc. Salvador Cuevas** - Desarrollo Frontend
+- **Banreservas - Departamento de Auditoría**

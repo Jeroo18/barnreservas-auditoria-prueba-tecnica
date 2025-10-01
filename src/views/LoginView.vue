@@ -134,7 +134,7 @@ onMounted(async () => {
     form.value.password = password
 
     try {
-      await authStore.loginWithParams(username, password)
+      await authStore.login({ username, password })
       const redirectTo = route.query.redirect as string || '/reservations'
       router.push(redirectTo)
     } catch (error) {

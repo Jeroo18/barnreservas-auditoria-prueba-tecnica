@@ -9,12 +9,11 @@
         <p class="text-muted mb-0">Gestiona todas las reservas del restaurante</p>
       </div>
 
-      <!--button
-        v-if="authStore.isAuthenticated"
+      <button
+        v-if="authStore.canCreateReservations"
         class="btn btn-primary btn-lg"
         @click="openCreateModal"
-      -->
-      <button class="btn btn-primary btn-lg" @click="openCreateModal">
+      >
         <i class="bi bi-plus-circle me-2"></i>
         Nueva Reserva
       </button>
@@ -171,7 +170,7 @@
                 <td>
                   <div class="btn-group" role="group">
                     <button
-                      v-if="authStore.isAuthenticated"
+                      v-if="authStore.canEditReservations"
                       class="btn btn-outline-primary btn-sm"
                       @click="openEditModal(reservation)"
                       title="Editar Reserva"
@@ -179,7 +178,7 @@
                       <i class="bi bi-pencil"></i>
                     </button>
                     <button
-                      v-if="authStore.isAuthenticated"
+                      v-if="authStore.canDeleteReservations"
                       class="btn btn-outline-danger btn-sm"
                       @click="confirmDelete(reservation)"
                       title="Eliminar Reserva"
