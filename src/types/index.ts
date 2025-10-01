@@ -1,7 +1,8 @@
 export interface User {
-  id: number
-  username: string
-  email: string
+  Id: string
+  UserName: string
+  Email: string
+  Token: string
 }
 
 export interface LoginCredentials {
@@ -10,8 +11,10 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  token: string
-  user: User
+  Id: string
+  UserName: string
+  Email: string
+  Token: string
 }
 
 export interface Reservation {

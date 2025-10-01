@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
       error.value = null
 
       const response = await authService.login(credentials)
-      user.value = response.user
+      user.value = response
 
       return response
     } catch (err: any) {

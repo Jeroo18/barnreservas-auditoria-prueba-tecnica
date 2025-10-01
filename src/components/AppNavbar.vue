@@ -47,13 +47,13 @@
               data-bs-toggle="dropdown"
             >
               <i class="bi bi-person-circle me-1"></i>
-              {{ authStore.user?.username }}
+              {{ authStore.user?.UserName }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
                 <h6 class="dropdown-header">
                   <i class="bi bi-person me-1"></i>
-                  {{ authStore.user?.email }}
+                  {{ authStore.user?.Email }}
                 </h6>
               </li>
               <li><hr class="dropdown-divider"></li>

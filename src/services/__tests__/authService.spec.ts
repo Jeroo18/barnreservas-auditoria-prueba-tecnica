@@ -63,7 +63,7 @@ describe('AuthService', () => {
 
   describe('User Management', () => {
     it('should set and get user correctly', () => {
-      const testUser = { id: 1, username: 'testuser', email: 'test@example.com' }
+      const testUser = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
 
       authService.setUser(testUser)
 
@@ -79,7 +79,7 @@ describe('AuthService', () => {
     })
 
     it('should parse and return user when it exists', () => {
-      const testUser = { id: 1, username: 'testuser', email: 'test@example.com' }
+      const testUser = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(testUser))
 
       const user = authService.getUser()

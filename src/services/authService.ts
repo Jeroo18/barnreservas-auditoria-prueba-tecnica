@@ -16,11 +16,11 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const response = await axios.post(`${this.apiBaseUrl}/auth/login`, credentials)
+      const response = await axios.post(`${this.apiBaseUrl}/Account/authenticate`, credentials)
       const authData: AuthResponse = response.data
 
-      this.setToken(authData.token)
-      this.setUser(authData.user)
+      this.setToken(authData.Token)
+      this.setUser(authData)
 
       return authData
     } catch (error: any) {

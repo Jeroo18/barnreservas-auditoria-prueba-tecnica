@@ -43,7 +43,7 @@ describe('Auth Store', () => {
     it('should return true when user exists and service confirms authentication', () => {
       vi.mocked(authService).isAuthenticated.mockReturnValue(true)
       const authStore = useAuthStore()
-      authStore.user = { id: 1, username: 'testuser', email: 'test@example.com' }
+      authStore.user = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
 
       expect(authStore.isAuthenticated).toBe(true)
     })
@@ -51,7 +51,7 @@ describe('Auth Store', () => {
     it('should return false when user exists but service denies authentication', () => {
       vi.mocked(authService).isAuthenticated.mockReturnValue(false)
       const authStore = useAuthStore()
-      authStore.user = { id: 1, username: 'testuser', email: 'test@example.com' }
+      authStore.user = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
 
       expect(authStore.isAuthenticated).toBe(false)
     })
@@ -61,7 +61,7 @@ describe('Auth Store', () => {
     it('should allow all CRUD operations when authenticated', () => {
       vi.mocked(authService).isAuthenticated.mockReturnValue(true)
       const authStore = useAuthStore()
-      authStore.user = { id: 1, username: 'testuser', email: 'test@example.com' }
+      authStore.user = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
 
       expect(authStore.canCreateReservations).toBe(true)
       expect(authStore.canEditReservations).toBe(true)
@@ -82,8 +82,7 @@ describe('Auth Store', () => {
 
   describe('Login', () => {
     it('should login successfully', async () => {
-      const mockUser = { id: 1, username: 'testuser', email: 'test@example.com' }
-      const mockResponse = { token: 'test-token', user: mockUser }
+      const mockResponse = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'test-token' }
       vi.mocked(authService).login.mockResolvedValue(mockResponse)
 
       const authStore = useAuthStore()
@@ -92,7 +91,7 @@ describe('Auth Store', () => {
       const result = await authStore.login(credentials)
 
       expect(vi.mocked(authService).login).toHaveBeenCalledWith(credentials)
-      expect(authStore.user).toEqual(mockUser)
+      expect(authStore.user).toEqual(mockResponse)
       expect(authStore.error).toBe(null)
       expect(authStore.isLoading).toBe(false)
       expect(result).toEqual(mockResponse)
@@ -126,7 +125,7 @@ describe('Auth Store', () => {
 
       expect(authStore.isLoading).toBe(true)
 
-      resolveLogin!({ token: 'test-token', user: { id: 1, username: 'testuser', email: 'test@example.com' } })
+      resolveLogin!({ Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'test-token' })
       await loginCall
 
       expect(authStore.isLoading).toBe(false)
@@ -136,7 +135,7 @@ describe('Auth Store', () => {
   describe('Logout', () => {
     it('should logout and clear state', () => {
       const authStore = useAuthStore()
-      authStore.user = { id: 1, username: 'testuser', email: 'test@example.com' }
+      authStore.user = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
       authStore.error = 'Some error'
 
       authStore.logout()
@@ -149,7 +148,7 @@ describe('Auth Store', () => {
 
   describe('Initialize Auth', () => {
     it('should initialize with existing user when authenticated', () => {
-      const mockUser = { id: 1, username: 'testuser', email: 'test@example.com' }
+      const mockUser = { Id: '123', UserName: 'testuser', Email: 'test@example.com', Token: 'token' }
       vi.mocked(authService).isAuthenticated.mockReturnValue(true)
       vi.mocked(authService).getUser.mockReturnValue(mockUser)
 
